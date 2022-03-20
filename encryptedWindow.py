@@ -4,7 +4,7 @@ import numpy as np
 import PIL.Image
 
 
-class Ui_encryptedWindow(object):
+class Ui_EncryptedWindow(object):
     def setupUi(self, encryptedWindow):
         encryptedWindow.setObjectName("encryptedWindow")
         encryptedWindow.resize(461, 376)

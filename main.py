@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
-from encryptedWindow import Ui_encryptedWindow
+from encryptedWindow import Ui_EncryptedWindow
+from extractedWindow import Ui_ExtractedWindow
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -110,18 +111,18 @@ class Ui_MainWindow(object):
 
     def add_functions(self):
         self.encryptedBtn.clicked.connect(lambda: self.openEncryptedWindow())
-        self.decryptedBtn.clicked.connect(lambda: self.openDecryptedWindow())
+        self.decryptedBtn.clicked.connect(lambda: self.openExtractedWindow())
         self.exitBtn.clicked.connect(lambda: self.exitFromApp())
 
 
 
     def openEncryptedWindow(self):
-        self.ui2 = mywindow2()
-        self.ui2.show()
-
-
-    def openDecryptedWindow(self):
-        print("decrypt")
+        self.uiEncrypt = encryptedWindow()
+        self.uiEncrypt.show()
+        
+    def openExtractedWindow(self):
+        self.uiExtract = extractedWindow()
+        self.uiExtract.show()
 
     def exitFromApp(self):
         ask = QMessageBox()
@@ -138,11 +139,17 @@ class Ui_MainWindow(object):
             sys.exit()
 
 
-class mywindow2(QtWidgets.QMainWindow):
+class encryptedWindow(QtWidgets.QMainWindow):
     def __init__(self):
-        super(mywindow2, self).__init__()
-        self.ui2 = Ui_encryptedWindow()
-        self.ui2.setupUi(self)
+        super(encryptedWindow, self).__init__()
+        self.uiEncrypt = Ui_EncryptedWindow()
+        self.uiEncrypt.setupUi(self)
+
+class extractedWindow(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(extractedWindow, self).__init__()
+        self.uiExtract = Ui_ExtractedWindow()
+        self.uiExtract.setupUi(self)
 
 
 
