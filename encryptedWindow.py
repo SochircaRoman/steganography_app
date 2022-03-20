@@ -99,9 +99,9 @@ class Ui_encryptedWindow(object):
         _translate = QtCore.QCoreApplication.translate
         encryptedWindow.setWindowTitle(_translate("encryptedWindow", "Ascunderea Textului"))
         self.addImage.setText(_translate("encryptedWindow", "Alegeti o imagine"))
-        self.comboBox.setItemText(0, _translate("encryptedWindow", "1 culoarae"))
-        self.comboBox.setItemText(1, _translate("encryptedWindow", "2 culori"))
-        self.comboBox.setItemText(2, _translate("encryptedWindow", "3 culori"))
+        self.comboBox.setItemText(0, _translate("encryptedWindow", "1"))
+        self.comboBox.setItemText(1, _translate("encryptedWindow", "2"))
+        self.comboBox.setItemText(2, _translate("encryptedWindow", "3"))
         self.label.setText(_translate("encryptedWindow", "Pas 1: Alegeti numarul de culori pentru ascundere (1-3)"))
         self.label_2.setText(_translate("encryptedWindow", "Pas 2: Alegeti un fisier text care va fi inserat in imagine (.txt)"))
         self.addText.setText(_translate("encryptedWindow", "Alegeti un text"))
@@ -133,10 +133,26 @@ class Ui_encryptedWindow(object):
             error.exec_()
         else:
             self.messageToHide = data
+            success = QMessageBox()
+            success.setWindowTitle("Succes")
+            success.setText("Textul a fost adaugat cu succes!")
+            success.setIcon(QMessageBox.Information)
+            success.setStandardButtons(QMessageBox.Ok)
+            success.exec_()
 
     def openImagePath(self):
-        file, _ = QFileDialog.getOpenFileName(None, "QFileDialog.getOpenFileName()", "", "jpg images (*.jpg);;png images (*.png)")
-        self.imagePath = file
+        filePath, _ = QFileDialog.getOpenFileName(None, "QFileDialog.getOpenFileName()", "", "jpg images (*.jpg);;png images (*.png)")
+        if filePath == "":
+            return
+
+        self.imagePath = filePath
+        if self.imagePath != "":
+            success = QMessageBox()
+            success.setWindowTitle("Succes")
+            success.setText("Imaginea a fost adaugata cu succes!")
+            success.setIcon(QMessageBox.Information)
+            success.setStandardButtons(QMessageBox.Ok)
+            success.exec_()
 
 
     def encryptedTextToImage(self):
@@ -170,7 +186,6 @@ class Ui_encryptedWindow(object):
             pixels = img_arr.size // channels
 
             stop_indicator = f"${self.inputPassword.text()}$"
-            stop_indicator_length = len(stop_indicator)
 
             self.messageToHide += stop_indicator
             byte_message = "".join(f"{ord(c):08b}" for c in self.messageToHide)
@@ -187,13 +202,14 @@ class Ui_encryptedWindow(object):
             else:
                 index = 0
                 for i in range(pixels):
-                    for j in range(0, 3):
+                    for j in range(0, int(self.comboBox.currentText())):
                         if index < bits:
                             img_arr[i][j] = int(bin(img_arr[i][j])[2:-1] + byte_message[index], 2)
                             index += 1
                 img_arr = img_arr.reshape((height, width, channels))
                 result = PIL.Image.fromarray(img_arr.astype('uint8'), image.mode)
-                result.save("encoded.png")
+                filePath, _ = QFileDialog.getSaveFileName(None, "Save Image", "", "PNG (*.png)")
+                result.save(filePath)
 
                 success = QMessageBox()
                 success.setWindowTitle("Succes")
