@@ -1,4 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMessageBox
 from encryptedWindow import Ui_encryptedWindow
 
 class Ui_MainWindow(object):
@@ -123,7 +124,18 @@ class Ui_MainWindow(object):
         print("decrypt")
 
     def exitFromApp(self):
-        print("exit")
+        ask = QMessageBox()
+        ask.setWindowTitle("Iesire")
+        ask.setText("Doriti sa iesiti din aplicatie?")
+        ask.setIcon(QMessageBox.Warning)
+        ask.setStandardButtons(QMessageBox.Yes|QMessageBox.Cancel)
+
+        ask.buttonClicked.connect(self.exitAction)
+        ask.exec_()
+
+    def exitAction(self, btn):
+        if btn.text() == "&Yes":
+            sys.exit()
 
 
 class mywindow2(QtWidgets.QMainWindow):

@@ -160,21 +160,21 @@ class Ui_encryptedWindow(object):
             error = QMessageBox()
             error.setWindowTitle("Error")
             error.setText("Fisierul text nu este incarcat!")
-            error.setIcon(QMessageBox.Warning)
+            error.setIcon(QMessageBox.Critical)
             error.setStandardButtons(QMessageBox.Ok)
             error.exec_()
         elif self.inputPassword.text() == "":
             error = QMessageBox()
             error.setWindowTitle("Error")
             error.setText("Nu a fost introdusa parola!")
-            error.setIcon(QMessageBox.Warning)
+            error.setIcon(QMessageBox.Critical)
             error.setStandardButtons(QMessageBox.Ok)
             error.exec_()
         elif self.imagePath == "":
             error = QMessageBox()
             error.setWindowTitle("Error")
             error.setText("Nu a fost incarcata imaginea!")
-            error.setIcon(QMessageBox.Warning)
+            error.setIcon(QMessageBox.Critical)
             error.setStandardButtons(QMessageBox.Ok)
             error.exec_()
         else:
@@ -195,7 +195,7 @@ class Ui_encryptedWindow(object):
                 error = QMessageBox()
                 error.setWindowTitle("Error")
                 error.setText("Imaginea este prea mica pentru a ascunde textul!")
-                error.setIcon(QMessageBox.Warning)
+                error.setIcon(QMessageBox.Critical)
                 error.setStandardButtons(QMessageBox.Ok)
                 error.exec_()
                 return 0
