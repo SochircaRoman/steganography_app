@@ -6,6 +6,7 @@ import PIL.Image
 
 class Ui_ExtractedWindow(object):
     def setupUi(self, extractedWindow):
+        extractedWindow.setWindowIcon(QtGui.QIcon('background/data-encryption.png'))
         extractedWindow.setObjectName("extractedWindow")
         extractedWindow.resize(474, 376)
         font = QtGui.QFont()
@@ -146,8 +147,9 @@ class Ui_ExtractedWindow(object):
 
             if stop_indicator in secret_message:
                 textPath, _ = QFileDialog.getSaveFileName(None, "Save File", "", "Text (*.txt)")
+                if textPath == "":
+                    return
                 self.createTextFile(secret_message[:secret_message.index(stop_indicator)], textPath)
-                print(secret_message[:secret_message.index(stop_indicator)])
             else:
                 error = QMessageBox()
                 error.setWindowTitle("Eroare")

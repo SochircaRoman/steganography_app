@@ -6,6 +6,7 @@ import PIL.Image
 
 class Ui_EncryptedWindow(object):
     def setupUi(self, encryptedWindow):
+        encryptedWindow.setWindowIcon(QtGui.QIcon('background/data-encryption.png'))
         encryptedWindow.setObjectName("encryptedWindow")
         encryptedWindow.resize(461, 376)
         font = QtGui.QFont()

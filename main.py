@@ -5,6 +5,7 @@ from extractedWindow import Ui_ExtractedWindow
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+        MainWindow.setWindowIcon(QtGui.QIcon('background/data-encryption.png'))
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
         MainWindow.resize(490, 339)
