@@ -98,11 +98,11 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Steganografie"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Steganografie imagine"))
         self.text_1Lb.setText(_translate("MainWindow", "Creat de:"))
         self.text_2Lb.setText(_translate("MainWindow", "Roman Sochirca IS21Z USARB"))
         self.encryptedBtn.setText(_translate("MainWindow", "Ascunde"))
-        self.decryptedBtn.setText(_translate("MainWindow", "Descifreza"))
+        self.decryptedBtn.setText(_translate("MainWindow", "Extrage"))
         self.exitBtn.setText(_translate("MainWindow", "Iesire"))
         self.actionopen.setText(_translate("MainWindow", "open"))
         self.actionnew.setText(_translate("MainWindow", "new"))
@@ -119,7 +119,7 @@ class Ui_MainWindow(object):
     def openEncryptedWindow(self):
         self.uiEncrypt = encryptedWindow()
         self.uiEncrypt.show()
-        
+
     def openExtractedWindow(self):
         self.uiExtract = extractedWindow()
         self.uiExtract.show()

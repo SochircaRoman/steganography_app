@@ -121,6 +121,8 @@ class Ui_EncryptedWindow(object):
 
     def openTextFile(self):
         file, _ = QFileDialog.getOpenFileName(None, "QFileDialog.getOpenFileName()", "", "Text Files (*.txt)")
+        if file == "":
+            return
         with open(file) as f:
             data = f.read()
 
@@ -172,8 +174,8 @@ class Ui_EncryptedWindow(object):
             error.exec_()
         elif self.imagePath == "":
             error = QMessageBox()
-            error.setWindowTitle("Error")
-            error.setText("Nu a fost incarcata imaginea!")
+            error.setWindowTitle("Eroare")
+            error.setText("Nu a fost adaugata imaginea!")
             error.setIcon(QMessageBox.Critical)
             error.setStandardButtons(QMessageBox.Ok)
             error.exec_()

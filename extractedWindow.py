@@ -1,4 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QInputDialog, QFileDialog, QMessageBox
+import numpy as np
+import PIL.Image
 
 
 class Ui_ExtractedWindow(object):
@@ -76,6 +79,9 @@ class Ui_ExtractedWindow(object):
         self.retranslateUi(extractedWindow)
         QtCore.QMetaObject.connectSlotsByName(extractedWindow)
 
+        self.add_functions()
+
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("extractedWindow", "Extragera Textului"))
@@ -89,3 +95,73 @@ class Ui_ExtractedWindow(object):
         self.label_5.setText(_translate("extractedWindow", "Pas 4: Confirmati alegerea"))
         self.label_6.setText(_translate("extractedWindow", "Parola"))
         self.confirmBtn.setText(_translate("extractedWindow", "Confirmati"))
+
+    def add_functions(self):
+        self.imagePath = ""
+        self.addImage.clicked.connect(lambda: self.openImagePath())
+        self.confirmBtn.clicked.connect(lambda: self.extractTextFromImage())
+
+    def openImagePath(self):
+        filePath, _ = QFileDialog.getOpenFileName(None, "QFileDialog.getOpenFileName()", "", "png images (*.png)")
+        if filePath == "":
+            return
+
+        self.imagePath = filePath
+        if self.imagePath != "":
+            success = QMessageBox()
+            success.setWindowTitle("Succes")
+            success.setText("Imaginea a fost adaugata cu succes!")
+            success.setIcon(QMessageBox.Information)
+            success.setStandardButtons(QMessageBox.Ok)
+            success.exec_()
+
+    def extractTextFromImage(self):
+        if self.inputPassword.text() == "":
+            error = QMessageBox()
+            error.setWindowTitle("Eroare")
+            error.setText("Nu a fost introdusa parola!")
+            error.setIcon(QMessageBox.Critical)
+            error.setStandardButtons(QMessageBox.Ok)
+            error.exec_()
+        elif self.imagePath == "":
+            error = QMessageBox()
+            error.setWindowTitle("Eroare")
+            error.setText("Nu a fost adaugata imaginea!")
+            error.setIcon(QMessageBox.Critical)
+            error.setStandardButtons(QMessageBox.Ok)
+            error.exec_()
+        else:
+            image = PIL.Image.open(self.imagePath)
+            img_arr = np.array(list(image.getdata()))
+            channels = 4 if image.mode == "RGBA" else 3
+            pixels = img_arr.size // channels
+
+            secret_bits = [bin(img_arr[i][j])[-1] for i in range(pixels) for j in range(0, int(self.comboBox.currentText()))]
+            secret_bits = ''.join(secret_bits)
+            secret_bits = [secret_bits[i:i + 8] for i in range(0, len(secret_bits), 8)]
+
+            secret_message = [chr(int(secret_bits[i], 2)) for i in range(len(secret_bits))]
+            secret_message = ''.join(secret_message)
+            stop_indicator = f"${self.inputPassword.text()}$"
+
+            if stop_indicator in secret_message:
+                textPath, _ = QFileDialog.getSaveFileName(None, "Save File", "", "Text (*.txt)")
+                self.createTextFile(secret_message[:secret_message.index(stop_indicator)], textPath)
+                print(secret_message[:secret_message.index(stop_indicator)])
+            else:
+                error = QMessageBox()
+                error.setWindowTitle("Eroare")
+                error.setText("Ceva nu a mers bine!")
+                error.setIcon(QMessageBox.Critical)
+                error.setStandardButtons(QMessageBox.Ok)
+                error.exec_()
+
+    def createTextFile(self, text, textPath):
+        with open(textPath, 'w') as f:
+            f.write(text)
+        success = QMessageBox()
+        success.setWindowTitle("Succes")
+        success.setText("Fisierul cu textul extras a fost creat!")
+        success.setIcon(QMessageBox.Information)
+        success.setStandardButtons(QMessageBox.Ok)
+        success.exec_()
